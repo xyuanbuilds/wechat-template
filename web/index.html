@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Antd Mobile UMD 组件加载器</title>
+    <!-- React UMD 链接 -->
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem;
+        line-height: 1.6;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        color: white;
+      }
+      .container {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 2rem;
+        font-size: 2.5rem;
+      }
+      .feature {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 1rem;
+        margin: 1rem 0;
+        border-radius: 10px;
+        border-left: 4px solid #fff;
+      }
+      .btn {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 12px 24px;
+        text-decoration: none;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        cursor: pointer;
+        font-size: 16px;
+        margin: 5px;
+      }
+      .btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+      }
+      .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none !important;
+      }
+      /* React 组件样式 */
+      .react-component {
+        background: rgba(255, 255, 255, 0.15);
+        padding: 1.5rem;
+        margin: 1rem 0;
+        border-radius: 15px;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+      }
+      /* Antd Mobile 样式支持 */
+      .adm-button {
+        font-family: inherit !important;
+      }
+      .footer {
+        text-align: center;
+        margin-top: 2rem;
+        opacity: 0.8;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>📱 Antd Mobile UMD 加载器</h1>
+
+      <div class="feature">
+        <h3>⚛️ Antd Mobile 组件演示</h3>
+        <p>点击下面的按钮来加载 antd-mobile UMD 组件库并渲染 Button 组件：</p>
+
+        <div style="text-align: center; margin: 1rem 0">
+          <button id="load-antd-mobile" class="btn">
+            📱 加载 Antd Mobile Button
+          </button>
+        </div>
+      </div>
+
+      <div class="footer">
+        <p>部署时间: <span id="timestamp"></span></p>
+      </div>
+    </div>
+
+    <!-- Antd Mobile UMD 组件加载器 -->
+    <script>
+      // 组件加载器类
+      class CardLoader {
+        // 加载外部 UMD 组件
+        static loadComponent(url, componentName) {
+          return new Promise((resolve, reject) => {
+            // 检查组件是否已存在
+            if (window[componentName]) {
+              console.log(`⚡ ${componentName} 已存在，跳过加载`);
+              resolve(window[componentName]);
+              return;
+            }
+
+            const script = document.createElement("script");
+            script.src = url;
+            script.onload = () => {
+              console.log(`✅ ${componentName} 加载成功`);
+              const Component = window[componentName];
+              if (Component) {
+                resolve(Component);
+              } else {
+                reject(new Error(`组件 ${componentName} 未找到`));
+              }
+            };
+            script.onerror = () => {
+              reject(new Error(`加载失败: ${url}`));
+            };
+            document.head.appendChild(script);
+          });
+        }
+
+        // 自动创建容器并渲染组件
+        static renderComponent(Component, options = {}) {
+          const {
+            requestId,
+            title = "📱 Antd Mobile 组件",
+            props = {},
+          } = options;
+
+          const containerId = requestId || `antd-container-${Date.now()}`;
+
+          // 查找父容器
+          const parent = document.querySelector(".container");
+          if (!parent) {
+            throw new Error("父容器未找到");
+          }
+
+          // 创建组件包装器
+          const wrapper = document.createElement("div");
+          wrapper.className = "feature";
+
+          const titleElement = document.createElement("h4");
+          titleElement.textContent = title;
+          wrapper.appendChild(titleElement);
+
+          // 创建组件容器
+          const container = document.createElement("div");
+          container.id = containerId;
+          container.className = "react-component";
+
+          wrapper.appendChild(container);
+          parent.appendChild(wrapper);
+
+          // 渲染组件
+          const root = ReactDOM.createRoot(container);
+          root.render(React.createElement(Component, props));
+
+          console.log(`🚀 组件已渲染到 #${containerId}`);
+
+          return { root, container, wrapper };
+        }
+
+        // 一步加载并渲染
+        static loadAndRender(url, componentName, options = {}) {
+          return this.loadComponent(url, componentName).then((Component) => {
+            return this.renderComponent(Component, options);
+          });
+        }
+      }
+
+      // 页面加载完成后设置
+      window.addEventListener("DOMContentLoaded", function () {
+        // 显示当前时间
+        document.getElementById("timestamp").textContent =
+          new Date().toLocaleString("zh-CN");
+
+        // Antd Mobile 加载按钮事件
+        document
+          .getElementById("load-antd-mobile")
+          .addEventListener("click", function () {
+            // 防止重复点击
+            this.disabled = true;
+            this.textContent = "🔄 正在加载...";
+
+            CardLoader.loadComponent(
+              "https://unpkg.com/antd-mobile@5.39.0/umd/antd-mobile.js",
+              "antdMobile"
+            )
+              .then((antdMobile) => {
+                console.log("✅ Antd Mobile 加载成功:", antdMobile);
+
+                // 创建 Antd Mobile Button 演示组件
+                const AntdButtonDemo = function (props) {
+                  const [count, setCount] = React.useState(0);
+
+                  // TODO 实际的卡片直接加载
+                  const { Button } = antdMobile;
+
+                  return React.createElement(
+                    "div",
+                    {
+                      style: { textAlign: "center", padding: "20px" },
+                    },
+                    React.createElement(
+                      "p",
+                      {
+                        style: { margin: "15px 0", fontSize: "16px" },
+                      },
+                      `计数: ${count}`
+                    ),
+
+                    React.createElement(
+                      "div",
+                      { style: { margin: "20px 0" } },
+                      React.createElement(
+                        Button,
+                        {
+                          color: "primary",
+                          size: "large",
+                          onClick: () => setCount(count + 1),
+                          style: { margin: "8px" },
+                        },
+                        "🔥 增加"
+                      ),
+
+                      React.createElement(
+                        Button,
+                        {
+                          color: "default",
+                          onClick: () => setCount(count - 1),
+                          style: { margin: "8px" },
+                        },
+                        "📉 减少"
+                      )
+                    ),
+
+                    React.createElement(
+                      "div",
+                      { style: { margin: "20px 0" } },
+                      React.createElement(
+                        Button,
+                        {
+                          color: "success",
+                          fill: "outline",
+                          onClick: () => setCount(0),
+                          style: { margin: "8px" },
+                        },
+                        "🔄 重置"
+                      ),
+
+                      React.createElement(
+                        Button,
+                        {
+                          color: "warning",
+                          fill: "none",
+                          disabled: count < 0,
+                          style: { margin: "8px" },
+                        },
+                        count < 0 ? "❌ 已禁用" : "⚠️ 警告"
+                      )
+                    ),
+
+                    React.createElement(
+                      "p",
+                      {
+                        style: {
+                          fontSize: "14px",
+                          opacity: 0.7,
+                          marginTop: "15px",
+                        },
+                      },
+                      "✨ 真正的 Antd Mobile 按钮组件"
+                    )
+                  );
+                };
+
+                // 渲染组件
+                const result = CardLoader.renderComponent(AntdButtonDemo, {
+                  title: "📱 Antd Mobile Button 组件",
+                });
+
+                console.log("🎯 Antd Mobile Button 已渲染:", result);
+                alert("Antd Mobile Button 组件加载成功！\n向下滚动查看效果。");
+
+                // 滚动到新组件
+                setTimeout(() => {
+                  result.wrapper.scrollIntoView({ behavior: "smooth" });
+                }, 100);
+
+                // 更新按钮状态
+                this.disabled = false;
+                this.textContent = "✅ 已加载 Antd Mobile";
+              })
+              .catch((error) => {
+                console.error("Antd Mobile 加载失败:", error);
+                alert("加载失败: " + error.message);
+
+                // 恢复按钮状态
+                this.disabled = false;
+                this.textContent = "❌ 加载失败，重试";
+              });
+          });
+      });
+
+      // 使用示例
+      /*
+        // 加载 Antd Mobile 组件库
+        CardLoader.loadComponent(
+            'https://unpkg.com/antd-mobile@5.39.0/umd/antd-mobile.js',
+            'antdMobile'
+        ).then(antdMobile => {
+            const { Button, Card, Input } = antdMobile;
+            
+            const MyComponent = function() {
+                return React.createElement('div', null,
+                    React.createElement(Button, { color: 'primary' }, '我的按钮')
+                );
+            };
+            
+            CardLoader.renderComponent(MyComponent, {
+                title: '📱 我的 Antd Mobile 组件'
+            });
+        });
+
+        // 一步加载并渲染
+        CardLoader.loadAndRender(
+            'https://unpkg.com/antd-mobile@5.39.0/umd/antd-mobile.js',
+            'antdMobile',
+            {
+                title: '📱 快速加载的组件',
+                props: { message: 'Hello World' }
+            }
+        );
+        */
+    </script>
+  </body>
+</html>
