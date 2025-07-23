@@ -1,0 +1,161 @@
+<!--pages/user/user.wxml-->
+<view class="container">
+  <!-- 用户信息区域 -->
+  <view class="user-info">
+    <view class="user-avatar">
+      <image 
+        wx:if="{{userInfo}}" 
+        src="{{userInfo.avatarUrl}}" 
+        class="avatar-image"
+        mode="aspectFill"
+      />
+      <view wx:else class="avatar-placeholder">
+        <text class="avatar-text">👤</text>
+      </view>
+    </view>
+    
+    <view class="user-details">
+      <view wx:if="{{userInfo}}" class="user-name">
+        {{userInfo.nickName}}
+      </view>
+      <view wx:else class="login-prompt">
+        <button 
+          class="login-btn" 
+          bindtap="getUserProfile"
+          type="primary"
+          size="mini"
+        >
+          点击登录
+        </button>
+      </view>
+      
+      <view wx:if="{{extConfig && extConfig.config && extConfig.config.business}}" class="business-info">
+        <text class="business-name">{{extConfig.config.business.name}}</text>
+      </view>
+    </view>
+    
+    <view wx:if="{{userInfo}}" class="logout-btn">
+      <button 
+        class="logout-button" 
+        bindtap="logout"
+        size="mini"
+        type="warn"
+      >
+        退出
+      </button>
+    </view>
+  </view>
+
+  <!-- 统计信息 -->
+  <view wx:if="{{userInfo}}" class="stats-section">
+    <view class="stats-item" data-type="orders" bindtap="onStatsTap">
+      <view class="stats-number">{{userStats.orders}}</view>
+      <view class="stats-label">订单</view>
+    </view>
+    <view class="stats-item" data-type="favorites" bindtap="onStatsTap">
+      <view class="stats-number">{{userStats.favorites}}</view>
+      <view class="stats-label">收藏</view>
+    </view>
+    <view class="stats-item" data-type="points" bindtap="onStatsTap">
+      <view class="stats-number">{{userStats.points}}</view>
+      <view class="stats-label">积分</view>
+    </view>
+    <view class="stats-item" data-type="coupons" bindtap="onStatsTap">
+      <view class="stats-number">{{userStats.coupons}}</view>
+      <view class="stats-label">优惠券</view>
+    </view>
+  </view>
+
+  <!-- 快捷订单 -->
+  <view wx:if="{{userInfo}}" class="order-section">
+    <view class="section-title">
+      <text>我的订单</text>
+      <text class="more-btn">查看全部 ></text>
+    </view>
+    <view class="order-status">
+      <view class="order-item" data-status="待付款" bindtap="onOrderStatusTap">
+        <view class="order-icon">💰</view>
+        <view class="order-text">待付款</view>
+      </view>
+      <view class="order-item" data-status="待发货" bindtap="onOrderStatusTap">
+        <view class="order-icon">📦</view>
+        <view class="order-text">待发货</view>
+      </view>
+      <view class="order-item" data-status="待收货" bindtap="onOrderStatusTap">
+        <view class="order-icon">🚚</view>
+        <view class="order-text">待收货</view>
+      </view>
+      <view class="order-item" data-status="待评价" bindtap="onOrderStatusTap">
+        <view class="order-icon">⭐</view>
+        <view class="order-text">待评价</view>
+      </view>
+      <view class="order-item" data-status="退换货" bindtap="onOrderStatusTap">
+        <view class="order-icon">🔄</view>
+        <view class="order-text">退换货</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <view class="menu-section">
+    <view class="section-title">
+      <text>功能菜单</text>
+    </view>
+    <view class="menu-list">
+      <view 
+        wx:for="{{menuList}}" 
+        wx:key="id"
+        class="menu-item"
+        data-item="{{item}}"
+        bindtap="onMenuTap"
+      >
+        <view class="menu-icon">{{item.icon}}</view>
+        <view class="menu-content">
+          <text class="menu-title">{{item.title}}</text>
+        </view>
+        <view wx:if="{{item.arrow}}" class="menu-arrow">></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 商家信息 -->
+  <view wx:if="{{extConfig && extConfig.config && extConfig.config.business}}" class="business-section">
+    <view class="section-title">
+      <text>商家信息</text>
+    </view>
+    <view class="business-card">
+      <view class="business-logo">
+        <image 
+          wx:if="{{extConfig.config.business.logo}}"
+          src="{{extConfig.config.business.logo}}" 
+          class="logo-image"
+          mode="aspectFill"
+        />
+        <view wx:else class="logo-placeholder">🏪</view>
+      </view>
+      <view class="business-details">
+        <view class="business-name">{{extConfig.config.business.name}}</view>
+        <view wx:if="{{extConfig.config.business.description}}" class="business-desc">
+          {{extConfig.config.business.description}}
+        </view>
+        <view wx:if="{{extConfig.config.business.contact}}" class="business-contact">
+          <view wx:if="{{extConfig.config.business.contact.phone}}" class="contact-item">
+            <text class="contact-label">电话：</text>
+            <text class="contact-value">{{extConfig.config.business.contact.phone}}</text>
+          </view>
+          <view wx:if="{{extConfig.config.business.contact.address}}" class="contact-item">
+            <text class="contact-label">地址：</text>
+            <text class="contact-value">{{extConfig.config.business.contact.address}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 版本信息 -->
+  <view class="version-section">
+    <text class="version-text">
+      版本 {{extConfig && extConfig.version ? extConfig.version : '1.0.0'}}
+    </text>
+  </view>
+</view> 

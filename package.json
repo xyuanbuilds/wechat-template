@@ -1,0 +1,36 @@
+{
+  "name": "miniprogram-template",
+  "version": "1.0.0",
+  "description": "微信小程序模板 - 专为第三方服务商设计",
+  "main": "app.js",
+  "scripts": {
+    "dev": "echo '请在微信开发者工具中打开项目'",
+    "build": "echo '请在微信开发者工具中构建项目'",
+    "test": "echo '暂无测试脚本'"
+  },
+  "keywords": [
+    "miniprogram",
+    "wechat",
+    "template",
+    "third-party",
+    "代开发"
+  ],
+  "author": {
+    "name": "你的名字",
+    "email": "your-email@example.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/miniprogram-template.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/miniprogram-template/issues"
+  },
+  "homepage": "https://github.com/your-username/miniprogram-template#readme",
+  "devDependencies": {},
+  "dependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

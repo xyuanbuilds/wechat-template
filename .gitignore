@@ -1,0 +1,50 @@
+# 微信小程序开发工具生成的文件
+project.private.config.json
+
+# 日志文件
+*.log
+logs/
+
+# 临时文件
+*.tmp
+*.temp
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 编辑器配置
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 依赖文件
+node_modules/
+miniprogram_npm/
+
+# 构建产物
+dist/
+build/
+
+# 环境变量文件
+.env
+.env.local
+.env.production
+
+# 用户上传的文件
+uploads/
+
+# 测试覆盖率
+coverage/
+
+# 缓存文件
+.cache/
+.specstory/
+
+# 小程序云开发相关
+cloudfunctions/*/node_modules/
+
+# 私钥文件
+*.key
+!project.config.json 

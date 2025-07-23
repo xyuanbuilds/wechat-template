@@ -1,0 +1,313 @@
+/* pages/webview/webview.wxss */
+
+.webview-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f5f5;
+}
+
+/* 顶部工具栏 */
+.toolbar {
+  background-color: #fff;
+  border-bottom: 1rpx solid #e0e0e0;
+  padding: 20rpx;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.url-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f8f9fa;
+  border-radius: 8rpx;
+  padding: 16rpx 20rpx;
+  border: 1rpx solid #e9ecef;
+  min-height: 60rpx;
+  box-sizing: border-box;
+}
+
+.url-text {
+  flex: 1;
+  font-size: 24rpx;
+  color: #495057;
+  word-break: break-all;
+  margin-right: 20rpx;
+  line-height: 1.4;
+  max-height: 80rpx;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.toolbar-buttons {
+  display: flex;
+  gap: 12rpx;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.tool-btn {
+  background-color: #007aff;
+  color: white;
+  border: none;
+  border-radius: 6rpx;
+  padding: 12rpx 16rpx;
+  font-size: 24rpx;
+  min-width: 64rpx;
+  min-height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  transition: background-color 0.2s ease;
+}
+
+.tool-btn:active {
+  background-color: #0056cc;
+}
+
+.tool-btn[disabled] {
+  background-color: #c6c6c6;
+  color: #ffffff;
+  opacity: 0.6;
+}
+
+.tool-btn[disabled]:active {
+  background-color: #c6c6c6;
+}
+
+.tool-btn .icon {
+  font-size: 28rpx;
+  line-height: 1;
+}
+
+/* 网址选择区域 */
+.url-selector {
+  background-color: #fff;
+  padding: 30rpx 20rpx;
+  border-bottom: 1rpx solid #e0e0e0;
+}
+
+.selector-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.custom-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6rpx;
+  padding: 12rpx 24rpx;
+  font-size: 24rpx;
+}
+
+.url-list {
+  white-space: nowrap;
+}
+
+.url-items {
+  display: flex;
+  gap: 20rpx;
+}
+
+.url-item {
+  flex-shrink: 0;
+  background-color: #f8f9fa;
+  border: 2rpx solid #e9ecef;
+  border-radius: 8rpx;
+  padding: 20rpx 24rpx;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 200rpx;
+}
+
+.url-item.active {
+  background-color: #007aff;
+  border-color: #007aff;
+}
+
+.url-item.active .url-title {
+  color: white;
+}
+
+.url-item:not(.active):hover {
+  background-color: #e9ecef;
+  border-color: #adb5bd;
+}
+
+.url-title {
+  font-size: 24rpx;
+  color: #495057;
+  text-align: center;
+  word-break: break-all;
+}
+
+/* 分隔线 */
+.divider {
+  height: 1rpx;
+  background-color: #e0e0e0;
+}
+
+/* web-view 容器 */
+.webview-wrapper {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.webview-wrapper web-view {
+  width: 100%;
+  height: 100%;
+}
+
+/* 空状态 */
+.empty-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  color: #6c757d;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  margin-bottom: 30rpx;
+  opacity: 0.6;
+}
+
+.empty-text {
+  font-size: 32rpx;
+  margin-bottom: 40rpx;
+  color: #6c757d;
+}
+
+.select-btn {
+  background-color: #007aff;
+  color: white;
+  border: none;
+  border-radius: 8rpx;
+  padding: 24rpx 48rpx;
+  font-size: 28rpx;
+}
+
+/* 响应式设计 */
+@media (max-width: 750rpx) {
+  .toolbar {
+    padding: 16rpx;
+  }
+
+  .url-bar {
+    padding: 12rpx 16rpx;
+    min-height: 56rpx;
+  }
+
+  .url-text {
+    font-size: 22rpx;
+    margin-right: 16rpx;
+  }
+
+  .toolbar-buttons {
+    gap: 8rpx;
+  }
+
+  .tool-btn {
+    min-width: 56rpx;
+    min-height: 56rpx;
+    padding: 8rpx 12rpx;
+    font-size: 22rpx;
+  }
+
+  .tool-btn .icon {
+    font-size: 24rpx;
+  }
+
+  .selector-title {
+    flex-direction: column;
+    gap: 16rpx;
+    text-align: center;
+  }
+}
+
+/* 超小屏幕适配 */
+@media (max-width: 600rpx) {
+  .url-bar {
+    flex-wrap: wrap;
+    gap: 12rpx;
+  }
+
+  .url-text {
+    flex: 1 1 100%;
+    margin-right: 0;
+    text-align: left;
+    font-size: 20rpx;
+  }
+
+  .toolbar-buttons {
+    flex: 1 1 auto;
+    justify-content: flex-end;
+  }
+}
+
+/* 深色模式支持 */
+@media (prefers-color-scheme: dark) {
+  .webview-container {
+    background-color: #1c1c1e;
+  }
+
+  .toolbar,
+  .url-selector,
+  .empty-state {
+    background-color: #2c2c2e;
+    border-color: #48484a;
+  }
+
+  .url-bar {
+    background-color: #3a3a3c;
+    border-color: #48484a;
+  }
+
+  .url-text,
+  .selector-title,
+  .empty-text {
+    color: #f2f2f7;
+  }
+
+  .tool-btn {
+    background-color: #0a84ff;
+  }
+
+  .tool-btn:active {
+    background-color: #0056cc;
+  }
+
+  .tool-btn[disabled] {
+    background-color: #6d6d70;
+    color: #8e8e93;
+  }
+
+  .url-item {
+    background-color: #3a3a3c;
+    border-color: #48484a;
+  }
+
+  .url-title {
+    color: #f2f2f7;
+  }
+
+  .divider {
+    background-color: #48484a;
+  }
+}

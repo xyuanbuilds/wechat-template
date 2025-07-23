@@ -1,0 +1,61 @@
+<!--pages/webview/webview.wxml-->
+<view class="webview-container">
+  
+  <!-- 顶部工具栏 -->
+  <view class="toolbar">
+    <view class="url-bar">
+      <text class="url-text">{{currentUrl || '请选择网址'}}</text>
+      <view class="toolbar-buttons">
+        <view class="tool-btn" bindtap="refreshWebView" disabled="{{!currentUrl}}">
+          <text class="icon">🔄 刷新</text>
+        </view>
+        <view class="tool-btn" bindtap="copyUrl" disabled="{{!currentUrl}}">
+          <text class="icon">📋 复制</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 网址选择区域 -->
+  <view class="url-selector">
+    <view class="selector-title">
+      <text>快速选择测试网址：</text>
+      <button class="custom-btn" bindtap="showInputDialog">自定义网址</button>
+    </view>
+    
+    <scroll-view class="url-list" scroll-x="true">
+      <view class="url-items">
+        <view 
+          wx:for="{{webUrls}}" 
+          wx:key="index"
+          class="url-item {{selectedIndex === index ? 'active' : ''}}"
+          data-index="{{index}}"
+          bindtap="selectUrl"
+        >
+          <view class="url-title">{{item}}</view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 分隔线 -->
+  <view class="divider"></view>
+
+  <!-- web-view 容器 -->
+  <view class="webview-wrapper" wx:if="{{currentUrl}}">
+    <web-view 
+      src="{{currentUrl}}" 
+      bindload="onWebViewLoad"
+      binderror="onWebViewError"
+      bindmessage="onWebViewMessage"
+    ></web-view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:else>
+    <view class="empty-icon">🌐</view>
+    <view class="empty-text">请选择一个网址开始测试</view>
+    <button class="select-btn" bindtap="showInputDialog">输入网址</button>
+  </view>
+
+</view> 

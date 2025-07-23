@@ -1,0 +1,60 @@
+<!-- pages/index/index.wxml -->
+<view class="page-container">
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading">
+    <text class="loading-text">加载中...</text>
+  </view>
+  
+  <!-- 页面内容 -->
+  <view wx:else class="content">
+
+    <!-- 快捷菜单 -->
+    <view class="quick-menu">
+      <view class="menu-item" bindtap="goToProducts">
+        <view class="menu-icon">📦</view>
+        <text class="menu-text">产品中心</text>
+      </view>
+      <view class="menu-item" bindtap="goToUser">
+        <view class="menu-icon">👤</view>
+        <text class="menu-text">个人中心</text>
+      </view>
+      <view class="menu-item" bindtap="goToAbout">
+        <view class="menu-icon">ℹ️</view>
+        <text class="menu-text">关于我们</text>
+      </view>
+      <view class="menu-item" bindtap="goToWebView">
+        <view class="menu-icon">🌐</view>
+        <text class="menu-text">WebView测试</text>
+      </view>
+    </view>
+
+    <!-- 用户信息 -->
+    <view class="user-section" wx:if="{{!userInfo}}">
+      <view class="user-card">
+        <text class="user-title">欢迎使用小程序模板</text>
+        <button class="user-subtitle" bindtap="getUserProfile">点击获取用户信息</button>
+      </view>
+    </view>
+
+    <view class="user-section" wx:else>
+      <view class="user-card">
+        <image class="user-avatar" src="{{userInfo.avatarUrl}}" />
+        <view class="user-info">
+          <text class="user-name">{{userInfo.nickName}}</text>
+          <text class="user-desc">欢迎回来！</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 商家信息 -->
+    <view class="business-section" wx:if="{{extConfig.config.business}}">
+      <view class="business-card">
+        <image class="business-logo" src="{{extConfig.config.business.logo}}" wx:if="{{extConfig.config.business.logo}}" />
+        <view class="business-info">
+          <text class="business-name">{{extConfig.config.business.name}}</text>
+          <text class="business-desc">{{extConfig.config.business.description}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view> 

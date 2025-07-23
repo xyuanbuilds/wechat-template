@@ -1,0 +1,56 @@
+{
+  "extEnable": false,
+  "extAppid": "",
+  "directCommit": false,
+  "ext": {
+    "name": "小程序模板",
+    "version": "1.0.0",
+    "description": "通用小程序模板，支持多商家使用",
+    "config": {
+      "theme": {
+        "primaryColor": "#3cc51f",
+        "backgroundColor": "#ffffff",
+        "textColor": "#333333"
+      },
+      "business": {
+        "name": "商家名称",
+        "logo": "商家logo链接",
+        "description": "商家描述",
+        "contact": {
+          "phone": "400-000-0000",
+          "address": "商家地址",
+          "email": "contact@example.com"
+        }
+      },
+      "features": {
+        "enableLocation": true,
+        "enablePayment": true,
+        "enableShare": true,
+        "enableFeedback": true
+      },
+      "api": {
+        "baseUrl": "https://api.example.com",
+        "timeout": 10000
+      }
+    }
+  },
+  "extPages": {
+    "pages/index/index": {
+      "navigationBarTitleText": "首页",
+      "enablePullDownRefresh": true
+    },
+    "pages/user/user": {
+      "navigationBarTitleText": "个人中心"
+    }
+  },
+  "window": {
+    "navigationBarTitleText": "小程序模板",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f8f8f8"
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "downloadFile": 10000
+  }
+}
