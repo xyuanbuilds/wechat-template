@@ -111,6 +111,9 @@ class AudioPlayer {
 
     // 绑定微信播放器事件
     this.innerAudioContext.onPlay(() => {
+      console.log(
+        `[AudioPlayer] onPlay 事件触发，当前音频: ${this.innerAudioContext.src}`
+      );
       this.state.playing = true;
       this.state.paused = false;
       this.state.loading = false;
@@ -289,7 +292,6 @@ class AudioPlayer {
       this.state.paused = false;
       this.state.loading = true;
       this._isStopped = false; // 重置停止标记
-      this._isStopped = false; // 重置停止标记
 
       // 检查缓存
       if (this.audioCache.has(src)) {
@@ -308,9 +310,39 @@ class AudioPlayer {
       this._emit("statechange", { ...this.state });
 
       if (this.isWeChat) {
+        // 在设置新 src 之前，确保 innerAudioContext 处于干净状态
+        console.log(`[AudioPlayer] 微信小程序设置音频源: ${src}`);
+        console.log(
+          `[AudioPlayer] 当前 innerAudioContext.src: ${this.innerAudioContext.src}`
+        );
+
+        try {
+          // 先停止当前播放（如果有的话）
+          this.innerAudioContext.stop();
+          console.log(`[AudioPlayer] innerAudioContext.stop() 执行成功`);
+        } catch (e) {
+          // 忽略停止失败的错误
+          console.log(
+            `[AudioPlayer] innerAudioContext.stop() 失败: ${e.message}`
+          );
+        }
+
+        // 设置新的音频源
         this.innerAudioContext.src = src;
+        console.log(
+          `[AudioPlayer] innerAudioContext.src 已设置为: ${this.innerAudioContext.src}`
+        );
+
         // 微信小程序会自动触发 canplay 事件
         const onCanplay = () => {
+          console.log(`[AudioPlayer] onCanplay 触发，音频源: ${src}`);
+          console.log(
+            `[AudioPlayer] innerAudioContext.src: ${this.innerAudioContext.src}`
+          );
+          console.log(
+            `[AudioPlayer] innerAudioContext.duration: ${this.innerAudioContext.duration}`
+          );
+
           this.innerAudioContext.offCanplay(onCanplay);
           this.innerAudioContext.offError(onError);
 
@@ -327,6 +359,7 @@ class AudioPlayer {
 
           this._emit("loadend");
           this._emit("statechange", { ...this.state });
+          console.log(`[AudioPlayer] 音频加载完成: ${src}`);
           resolve(audioData);
         };
         const onError = (error) => {
@@ -386,15 +419,22 @@ class AudioPlayer {
       try {
         // 如果传入了新的音频源，需要先停止当前播放
         if (src && src !== this.state.src) {
+          console.log(`[AudioPlayer] 切换音频: ${this.state.src} -> ${src}`);
+
           // 停止当前播放（如果正在播放或加载）
           if (this.state.playing || this.state.loading || this.state.paused) {
+            console.log(
+              `[AudioPlayer] 停止当前播放，当前状态: playing=${this.state.playing}, loading=${this.state.loading}, paused=${this.state.paused}`
+            );
             this.stop();
             // 等待一小段时间确保停止完成
             await new Promise((resolve) => setTimeout(resolve, 150));
           }
 
           // 设置新的音频源
+          console.log(`[AudioPlayer] 开始设置新音频源: ${src}`);
           await this.setSrc(src);
+          console.log(`[AudioPlayer] 音频源设置完成: ${this.state.src}`);
         } else if (src) {
           // 相同音频源，如果正在播放则直接返回
           if (this.state.playing) {
@@ -445,12 +485,22 @@ class AudioPlayer {
         }
 
         // 开始播放
+        console.log(`[AudioPlayer] 准备开始播放: ${this.state.src}`);
+
         if (this.isWeChat) {
           try {
             this._isStopped = false; // 播放时重置停止标记
+            console.log(`[AudioPlayer] 调用 innerAudioContext.play()`);
+            this.innerAudioContext.src = this.state.src;
+            console.log(
+              `[AudioPlayer] innerAudioContext.src: ${
+                this.innerAudioContext ? this.innerAudioContext.src : "null"
+              }`
+            );
             this.innerAudioContext.play();
             // 播放成功后同步状态
             setTimeout(() => this._syncState(), 100);
+            console.log(`[AudioPlayer] 播放调用成功`);
             resolve();
           } catch (error) {
             console.warn("微信音频播放失败:", error);
