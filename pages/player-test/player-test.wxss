@@ -1,0 +1,450 @@
+/* pages/player-test/player-test.wxss */
+
+/* 全局容器 */
+.container {
+  padding: 20rpx;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+/* 页面标题 */
+.header {
+  text-align: center;
+  margin-bottom: 40rpx;
+  padding: 30rpx 20rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20rpx;
+  color: white;
+}
+
+.header .title {
+  display: block;
+  font-size: 36rpx;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+
+.header .subtitle {
+  display: block;
+  font-size: 26rpx;
+  opacity: 0.9;
+}
+
+/* 通用区域样式 */
+.player-section,
+.audio-list-section,
+.custom-section,
+.function-section,
+.log-section {
+  background-color: white;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+}
+
+/* 区域标题 */
+.section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 2rpx solid #e9ecef;
+}
+
+.title-text {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+/* 当前播放信息 */
+.current-info {
+  margin-bottom: 30rpx;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15rpx 0;
+  border-bottom: 1rpx solid #f1f3f4;
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.label {
+  font-size: 28rpx;
+  color: #666;
+  font-weight: 500;
+}
+
+.value {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 600;
+}
+
+.status.playing {
+  color: #34c759;
+}
+
+.status.paused {
+  color: #ff9500;
+}
+
+.status.stopped {
+  color: #8e8e93;
+}
+
+.loading {
+  color: #007aff;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* 进度条区域 */
+.progress-section,
+.volume-section {
+  margin-bottom: 30rpx;
+}
+
+.progress-label,
+.volume-label {
+  display: block;
+  font-size: 26rpx;
+  color: #666;
+  margin-bottom: 15rpx;
+}
+
+.progress-slider,
+.volume-slider {
+  width: 100%;
+}
+
+/* 控制按钮 */
+.control-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.control-btn {
+  flex: 1;
+  height: 80rpx;
+  border-radius: 40rpx;
+  border: none;
+  font-size: 28rpx;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.control-btn.primary {
+  background-color: #007aff;
+  color: white;
+}
+
+.control-btn.primary:hover {
+  background-color: #0056b3;
+}
+
+.control-btn.primary.loading {
+  background-color: #8e8e93;
+}
+
+.control-btn.secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.control-btn.secondary:hover {
+  background-color: #545b62;
+}
+
+.control-btn.danger {
+  background-color: #dc3545;
+  color: white;
+}
+
+.control-btn.danger:hover {
+  background-color: #c82333;
+}
+
+.control-btn.info {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.control-btn.info:hover {
+  background-color: #138496;
+}
+
+/* 音频列表 */
+.audio-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15rpx;
+}
+
+.audio-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25rpx 20rpx;
+  background-color: #f8f9fa;
+  border-radius: 15rpx;
+  border: 2rpx solid transparent;
+  transition: all 0.3s ease;
+}
+
+.audio-item:hover {
+  background-color: #e9ecef;
+}
+
+.audio-item.active {
+  background-color: #e3f2fd;
+  border-color: #2196f3;
+}
+
+.audio-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.audio-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 5rpx;
+}
+
+.audio-duration {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.audio-status {
+  font-size: 32rpx;
+  margin-left: 20rpx;
+}
+
+/* 自定义音频输入 */
+.custom-input {
+  display: flex;
+  gap: 20rpx;
+  align-items: center;
+}
+
+.url-input {
+  flex: 1;
+  height: 80rpx;
+  padding: 0 20rpx;
+  border: 2rpx solid #e9ecef;
+  border-radius: 15rpx;
+  font-size: 28rpx;
+  background-color: #fff;
+}
+
+.url-input:focus {
+  border-color: #007aff;
+}
+
+.play-custom-btn {
+  width: 150rpx;
+  height: 80rpx;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 15rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.play-custom-btn:hover {
+  background-color: #218838;
+}
+
+/* 功能按钮 */
+.function-buttons {
+  display: flex;
+  gap: 20rpx;
+}
+
+.function-btn {
+  flex: 1;
+  height: 80rpx;
+  background-color: #6f42c1;
+  color: white;
+  border: none;
+  border-radius: 15rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.function-btn:hover {
+  background-color: #5a32a3;
+}
+
+/* 日志区域 */
+.log-actions {
+  display: flex;
+  gap: 15rpx;
+}
+
+.log-btn {
+  padding: 10rpx 20rpx;
+  height: 60rpx;
+  background-color: #ffc107;
+  color: #333;
+  border: none;
+  border-radius: 10rpx;
+  font-size: 24rpx;
+  font-weight: 600;
+}
+
+.log-btn:hover {
+  background-color: #e0a800;
+}
+
+.log-container {
+  height: 400rpx;
+  border: 2rpx solid #e9ecef;
+  border-radius: 15rpx;
+  padding: 20rpx;
+  background-color: #f8f9fa;
+}
+
+.log-item {
+  margin-bottom: 10rpx;
+  padding: 8rpx 12rpx;
+  background-color: white;
+  border-radius: 8rpx;
+  border-left: 4rpx solid #007aff;
+}
+
+.log-text {
+  font-size: 24rpx;
+  color: #333;
+  font-family: "Courier New", monospace;
+  line-height: 1.4;
+  word-break: break-all;
+}
+
+.log-empty {
+  text-align: center;
+  padding: 60rpx 0;
+  color: #999;
+  font-size: 28rpx;
+}
+
+/* 响应式适配 */
+@media screen and (max-width: 750rpx) {
+  .control-buttons {
+    flex-direction: column;
+    gap: 15rpx;
+  }
+
+  .function-buttons {
+    flex-direction: column;
+    gap: 15rpx;
+  }
+
+  .custom-input {
+    flex-direction: column;
+    gap: 15rpx;
+  }
+
+  .url-input {
+    width: 100%;
+  }
+
+  .play-custom-btn {
+    width: 100%;
+  }
+}
+
+/* 暗色模式支持 */
+@media (prefers-color-scheme: dark) {
+  .container {
+    background-color: #1c1c1e;
+  }
+
+  .player-section,
+  .audio-list-section,
+  .custom-section,
+  .function-section,
+  .log-section {
+    background-color: #2c2c2e;
+  }
+
+  .title-text,
+  .value,
+  .audio-title {
+    color: #ffffff;
+  }
+
+  .label,
+  .audio-duration {
+    color: #8e8e93;
+  }
+
+  .audio-item {
+    background-color: #3a3a3c;
+  }
+
+  .audio-item:hover {
+    background-color: #48484a;
+  }
+
+  .url-input {
+    background-color: #3a3a3c;
+    border-color: #48484a;
+    color: #ffffff;
+  }
+
+  .log-container {
+    background-color: #1c1c1e;
+    border-color: #48484a;
+  }
+
+  .log-item {
+    background-color: #2c2c2e;
+  }
+
+  .log-text {
+    color: #ffffff;
+  }
+}
+
+/* 加载动画 */
+.control-btn.loading::after {
+  content: "";
+  display: inline-block;
+  width: 20rpx;
+  height: 20rpx;
+  border: 2rpx solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: rgba(255, 255, 255, 0.8);
+  animation: spin 1s ease-in-out infinite;
+  margin-left: 10rpx;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

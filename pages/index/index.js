@@ -174,6 +174,13 @@ Page({
     });
   },
 
+  // 跳转到播放器测试页面
+  goToPlayerTest: function () {
+    wx.navigateTo({
+      url: "/pages/player-test/player-test",
+    });
+  },
+
   // 分享功能
   onShareAppMessage: function () {
     const extConfig = this.data.extConfig;

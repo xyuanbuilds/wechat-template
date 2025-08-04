@@ -1,0 +1,185 @@
+<!--pages/player-test/player-test.wxml-->
+<view class="container">
+  <!-- 页面标题 -->
+  <view class="header">
+    <text class="title">🎵 音频播放器测试</text>
+    <text class="subtitle">环境: {{playerInfo.isWeChat ? '微信小程序' : 'H5/Web'}}</text>
+  </view>
+
+  <!-- 播放器控制区域 -->
+  <view class="player-section">
+    <view class="section-title">
+      <text class="title-text">播放控制</text>
+    </view>
+    
+    <!-- 当前播放信息 -->
+    <view class="current-info">
+      <view class="info-row">
+        <text class="label">当前音频:</text>
+        <text class="value">{{playerState.src ? testAudios[currentAudioIndex].title : '未选择'}}</text>
+      </view>
+      <view class="info-row">
+        <text class="label">播放状态:</text>
+        <text class="value status {{playerState.playing ? 'playing' : (playerState.paused ? 'paused' : 'stopped')}}">
+          {{playerState.playing ? '▶️ 播放中' : (playerState.paused ? '⏸️ 已暂停' : '⏹️ 已停止')}}
+        </text>
+      </view>
+      <view class="info-row">
+        <text class="label">播放时间:</text>
+        <text class="value">{{utils.formatTime(playerState.currentTime)}} / {{utils.formatTime(playerState.duration)}}</text>
+      </view>
+      <view class="info-row" wx:if="{{playerState.loading}}">
+        <text class="label">状态:</text>
+        <text class="value loading">⏳ 加载中...</text>
+      </view>
+    </view>
+
+    <!-- 播放进度条 -->
+    <view class="progress-section">
+      <text class="progress-label">播放进度: {{progress}}%</text>
+      <slider 
+        class="progress-slider"
+        value="{{progress}}"
+        min="0"
+        max="100"
+        block-size="16"
+        backgroundColor="#e9ecef"
+        activeColor="#007aff"
+        bindchange="onProgressChange"
+      />
+    </view>
+
+    <!-- 音量控制 -->
+    <view class="volume-section">
+      <text class="volume-label">🔊 音量: {{volume}}%</text>
+      <slider 
+        class="volume-slider"
+        value="{{volume}}"
+        min="0"
+        max="100"
+        block-size="16"
+        backgroundColor="#e9ecef"
+        activeColor="#34c759"
+        bindchange="onVolumeChange"
+      />
+    </view>
+
+    <!-- 播放控制按钮 -->
+    <view class="control-buttons">
+      <button class="control-btn secondary" bindtap="playPrevious">⏮️ 上一首</button>
+      <button 
+        class="control-btn primary {{playerState.loading ? 'loading' : ''}}" 
+        bindtap="togglePlay"
+        disabled="{{playerState.loading}}"
+      >
+        {{playerState.playing ? '⏸️ 暂停' : '▶️ 播放'}}
+      </button>
+      <button class="control-btn secondary" bindtap="playNext">⏭️ 下一首</button>
+    </view>
+
+    <view class="control-buttons">
+      <button class="control-btn danger" bindtap="stopPlay">⏹️ 停止</button>
+      <button class="control-btn info" bindtap="getPlayerState">📊 状态</button>
+    </view>
+  </view>
+
+  <!-- 测试音频列表 -->
+  <view class="audio-list-section">
+    <view class="section-title">
+      <text class="title-text">测试音频列表</text>
+    </view>
+    
+    <view class="audio-list">
+      <view 
+        class="audio-item {{currentAudioIndex === index ? 'active' : ''}}"
+        wx:for="{{testAudios}}"
+        wx:key="id"
+        data-index="{{index}}"
+        bindtap="playAudio"
+      >
+        <view class="audio-info">
+          <text class="audio-title">{{item.title}}</text>
+          <text class="audio-duration">{{item.duration}}</text>
+        </view>
+        <view class="audio-status">
+          <text wx:if="{{currentAudioIndex === index && playerState.playing}}">🎵</text>
+          <text wx:elif="{{currentAudioIndex === index && playerState.paused}}">⏸️</text>
+          <text wx:else>▶️</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 自定义音频测试 -->
+  <view class="custom-section">
+    <view class="section-title">
+      <text class="title-text">自定义音频测试</text>
+    </view>
+    
+    <view class="custom-input">
+      <input 
+        class="url-input"
+        placeholder="请输入音频 URL"
+        value="{{customUrl}}"
+        bindinput="onCustomUrlInput"
+      />
+      <button class="play-custom-btn" bindtap="playCustomUrl">播放</button>
+    </view>
+  </view>
+
+  <!-- 功能测试按钮 -->
+  <view class="function-section">
+    <view class="section-title">
+      <text class="title-text">功能测试</text>
+    </view>
+    
+    <view class="function-buttons">
+      <button class="function-btn" bindtap="preloadTest">📂 预加载测试</button>
+      <button class="function-btn" bindtap="clearCache">🗑️ 清理缓存</button>
+    </view>
+  </view>
+
+  <!-- 事件日志 -->
+  <view class="log-section">
+    <view class="section-title">
+      <text class="title-text">事件日志</text>
+      <view class="log-actions">
+        <button class="log-btn" bindtap="clearLogs">清空</button>
+        <button class="log-btn" bindtap="copyLogs">复制</button>
+      </view>
+    </view>
+    
+    <scroll-view class="log-container" scroll-y="true">
+      <view class="log-item" wx:for="{{eventLogs}}" wx:key="*this">
+        <text class="log-text">{{item}}</text>
+      </view>
+      <view class="log-empty" wx:if="{{eventLogs.length === 0}}">
+        <text>暂无日志</text>
+      </view>
+    </scroll-view>
+  </view>
+</view>
+
+<!-- 自定义方法模板 -->
+<wxs module="utils">
+  var formatTime = function(seconds) {
+    if (!seconds || seconds < 0) return '00:00';
+    
+    var mins = Math.floor(seconds / 60);
+    var secs = Math.floor(seconds % 60);
+    
+    var minsStr = mins < 10 ? '0' + mins : mins.toString();
+    var secsStr = secs < 10 ? '0' + secs : secs.toString();
+    
+    return minsStr + ':' + secsStr;
+  };
+  
+  module.exports = {
+    formatTime: formatTime
+  };
+</wxs>
+
+<!-- 使用 WXS 格式化时间 -->
+<template name="formatTime">
+  <text>{{utils.formatTime(time)}}</text>
+</template>

@@ -26,6 +26,10 @@
         <view class="menu-icon">🌐</view>
         <text class="menu-text">WebView测试</text>
       </view>
+      <view class="menu-item" bindtap="goToPlayerTest">
+        <view class="menu-icon">🎵</view>
+        <text class="menu-text">播放器测试</text>
+      </view>
     </view>
 
     <!-- 用户信息 -->

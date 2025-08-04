@@ -1,5 +1,10 @@
 {
-  "pages": ["pages/index/index", "pages/user/user", "pages/webview/webview"],
+  "pages": [
+    "pages/index/index",
+    "pages/user/user",
+    "pages/webview/webview",
+    "pages/player-test/player-test"
+  ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
